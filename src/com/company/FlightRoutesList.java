@@ -50,37 +50,6 @@ public class FlightRoutesList implements Serializable {
         }
     }
 
-    //get flight routes from all the flights available in flightRoutesLinkedList
-    //with the user entered source and destination cities
-    //uses getCities from NodeFlightRoute class
-    // public void getRoutes(String sourceCity, String destinationCity) {
-    //     boolean routeFound = false;
-    //     if (isEmpty()) {
-    //         System.out.println("No flights Available! It's doomsday!");
-    //     } else {
-    //         NodeFlightRoute currentNode = head;
-    //         while (currentNode != null) {
-    //             City[] route = currentNode.getCities(sourceCity, destinationCity);
-    //             if (route != null) {
-    //                 routeFound = true;
-    //                 //TODO: Also Print Vacant Seats
-    //                 System.out.print("Route id " + currentNode.getRouteId() + " : ");
-    //                 for (int i = 0; i < route.length; i++) {
-    //                     if (i == route.length - 1) {
-    //                         System.out.print(route[i].name +"("+")");
-    //                     } else {
-    //                         System.out.print(route[i].name + "-->");
-    //                     }
-    //                 }
-    //             }
-    //             System.out.println();
-    //             currentNode = currentNode.next;
-    //         }
-    //         if (!routeFound) {
-    //             System.out.println("No flights available for this route");
-    //         }
-    //     }
-    // }
     public void getRoutes(String sourceCity, String destinationCity) {
         boolean routeFound = false;
         if (isEmpty()) {
