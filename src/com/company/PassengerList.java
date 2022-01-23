@@ -49,8 +49,19 @@ public class PassengerList implements Serializable {
         return count;
     }
 
-    public NodePassenger addPassenger(String name) {
-        NodePassenger newNode = new NodePassenger(name);
+    public boolean searchDuplicationPassport(String passportNum){
+        NodePassenger current = head;
+        while (current != null) {
+            if (current.passNum.equals(passportNum)){
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    public NodePassenger addPassenger(String name, String passNum) {
+        NodePassenger newNode = new NodePassenger(name, passNum);
         newNode.next = head;
         head = newNode;
         return newNode;
@@ -99,57 +110,4 @@ public class PassengerList implements Serializable {
         }
         return count;
     }
-
-    //    public void addPassengerToFlight(NodePassenger passenger,int flightId,FlightRoutesLinkedList frl) {
-    //        NodeFlightRoute current = frl.head; // flightLinkedList's head which is a NodeFlight node
-    ////        int startConnectionNum;
-    ////        int endConnectionNum;
-    //
-    //        //Getting connection numbers to add passenger between specific flights
-    //        while (current != null) {
-    //            if (current.getFlightId() == flightId) {
-    //                //flight node (for from-to)
-    //                NodeFlight flight = current.flights.head;
-    //                while (flight != null) {
-    //                    if (flight.source.name == passenger.sourceCity) {
-    //                        //traverse from source city to destination city and set seats in between
-    //                        while (flight.destination.name != passenger.destinationCity) {
-    //                            int seatNum; //seat number
-    //                            for (int i = 0; i < flight.seats.length; i++) {
-    //                                if (flight.seats[i] == null) {
-    //                                    flight.seats[i] = passenger;
-    //                                    seatNum = i;
-    //                                }
-    //                            }
-    //                            flight = flight.next;
-    //                        }
-    ////                        startConnectionNum = flight.getFlightConnectionsNum();
-    //                    }
-    ////                    if (flight.destination.name == passenger.destinationCity){
-    ////                        endConnectionNum = flight.getFlightConnectionsNum();
-    ////                    }
-    //                    flight = flight.next;
-    //                }
-    //            }
-    //            current = current.next;
-    //        }
-
-    //        //Setting current to frl head again
-    //        current = frl.head;
-    //
-    //        //Adding passenger to the seats array between the connectionNums
-    //        //otherwise setting seats array to null
-    //        while(current!=null){
-    //            NodeFlight flight  = current.flights.head;
-    //            while (flight != null) {
-    //                if (flight.source.name == passenger.sourceCity) {
-    //                    startConnectionNum = flight.getFlightConnectionsNum();
-    //                }
-    //                if (flight.destination.name == passenger.destinationCity) {
-    //                    endConnectionNum = flight.getFlightConnectionsNum();
-    //                }
-    //                flight = flight.next;
-    //            }
-    //        }
-    //    }
 }

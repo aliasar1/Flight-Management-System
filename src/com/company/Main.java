@@ -40,50 +40,69 @@ public class Main {
                 //scanner.nextLine();
                 if (choice < 11) {
                     if (choice == 1) {
+                        boolean cityExist = false;
                         System.out.println("Enter city : ");
                         String cityName = scanner.next();
-                        City city = new City(cityName);
-                        citiesList.add(city);
-                        try {
-                            FileManager.saveCitySerialized(citiesList);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (!cityName.matches("[a-zA-Z]+")){
+                            System.out.println("City name must have only alphabets!");
+                            continue;
                         }
-                        System.out.println("City added!");
-                        scanner.nextLine();
-                        scanner.nextLine();
-                    } else if (choice == 2) {
-                        System.out.println("Enter number of cities : ");
-                        int cityNum = scanner.nextInt();
-                        System.out.println("Available Cities : ");
-                        citiesList.forEach(city -> System.out.println(city.toString()));
-                        scanner.nextLine();
-
-                        City[] cities = new City[cityNum];
-                        boolean isFound = false;
-                        for (int i = 0; (i < cityNum); i++) {
-                            System.out.println("Enter city " + (i + 1) + " : ");
-                            String cityEntered = scanner.next();
-                            for (City city1 : citiesList) {
-                                if (city1.name.equals(cityEntered)) {
-                                    cities[i] = city1;
-                                    isFound = true;
-                                }
-                            }
-                            if (!isFound) {
-                                System.out.println("City not found!");
+                        for (City city : citiesList) {
+                            if (String.valueOf(city.name).equals(cityName)) {
+                                System.out.println("City already exists!\n");
+                                cityExist = true;
                                 break;
                             }
                         }
-                        if (isFound) {
-                            fl.addRoute(cities);
+                        if (!cityExist) {
+                            City city = new City(cityName);
+                            citiesList.add(city);
                             try {
-                                FileManager.saveRouteSerialized(fl);
+                                FileManager.saveCitySerialized(citiesList);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println("Route Added!");
+                            System.out.println("City added!");
                             scanner.nextLine();
+                            scanner.nextLine();
+                        }
+                    } else if (choice == 2) {
+                        System.out.println("Enter number of cities : ");
+                        int cityNum = scanner.nextInt();
+                        if (cityNum > 1) {
+                            System.out.println("Available Cities : ");
+                            citiesList.forEach(city -> System.out.println(city.toString()));
+                            scanner.nextLine();
+
+                            City[] cities = new City[cityNum];
+                            boolean isFound = false;
+                            for (int i = 0; (i < cityNum); i++) {
+                                System.out.println("Enter city " + (i + 1) + " : ");
+                                String cityEntered = scanner.next();
+                                for (City city1 : citiesList) {
+                                    if (city1.name.equals(cityEntered)) {
+                                        cities[i] = city1;
+                                        isFound = true;
+                                    }
+                                }
+                                if (!isFound) {
+                                    System.out.println("City not found!");
+                                    break;
+                                }
+                            }
+                            if (isFound) {
+                                fl.addRoute(cities);
+                                try {
+                                    FileManager.saveRouteSerialized(fl);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                System.out.println("Route Added!");
+                                scanner.nextLine();
+                            }
+                        }
+                        else {
+                            System.out.println("There must be minimum to cities in order to create a route!");
                         }
                     } else if (choice == 3) {
                         System.out.println("Cities : ");
@@ -98,24 +117,38 @@ public class Main {
                         System.out.println("Enter name :");
                         scanner.nextLine();
                         String name = scanner.nextLine();
-                        if (name.equals("")) {
-                            System.out.println("Name cannot be empty!");
-                            break;
+                        if (name.equals("") || !name.matches("[a-zA-Z]+")) {
+                            System.out.println("Name cannot be empty and should contain only alphabets!");
+                            continue;
                         }
-                        NodePassenger passenger = passengersList.addPassenger(name);
-                        System.out.println("Passenger added with id " + passenger.passengerId + "!");
-                        FileManager.savePassengersSerialized(passengersList);
-                        scanner.nextLine();
-                        scanner.nextLine();
+                        System.out.println("Enter passport number: ");
+                        String passNum = scanner.nextLine();
+                        if (passNum.length() != 8){
+                            System.out.println("Passport number length must be equal to 8!");
+                            continue;
+                        }
+                        boolean isPassNumSame = false;
+                        for (int i = 0; i<passengersList.listLength();i++){
+                            if (passengersList.searchDuplicationPassport(passNum)){
+                                System.out.println("Passenger already exists with same passport number!");
+                                isPassNumSame = true;
+                                break;
+                            }
+                        }
+                        if (!isPassNumSame) {
+                            NodePassenger passenger = passengersList.addPassenger(name, passNum);
+                            System.out.println("Passenger added with id " + passenger.passengerId + "!");
+                            FileManager.savePassengersSerialized(passengersList);
+                            scanner.nextLine();
+                            scanner.nextLine();
+                        }
                     } else if (choice == 6) {
                         System.out.println("Enter passenger id : ");
                         int passengerId = scanner.nextInt();
                         passengersList.displayPassenger(passengerId);
                         scanner.nextLine();
-                        scanner.nextLine();
                     } else if (choice == 7) {
                         passengersList.displayAllPassengers();
-                        scanner.nextLine();
                         scanner.nextLine();
                     } else if (choice == 8) {
                         System.out.println("Enter Source : ");
@@ -169,53 +202,5 @@ public class Main {
                 scanner.nextLine();
             }
         }
-
-        //        System.out.println("Thank you!");
-
-        //        PassengerLinkedList pl = new PassengerLinkedList();
-        //        NodePassenger passenger1 =pl.addPassenger("aleem","karachi","u.s.a");
-        //        NodePassenger passenger2 =pl.addPassenger("bilal","islamabad","france");
-        //        NodePassenger passenger3 =pl.addPassenger("aliasar","dubai","u.k");
-        //        NodePassenger passenger4 =  pl.addPassenger("hammad","karachi","dubai");
-        //        pl.displayAllPassengers();
-        //        pl.displayPassenger(3);
-
-        //        City karachi = new City("karachi");
-        //        City islamabad = new City("islamabad");
-        //        City dubai = new City("dubai");
-        //        City Uk = new City("u.k");
-        //        City france = new City("france");
-        //        City usa = new City("u.s.a");
-        //
-        //        City[] cities1 = {karachi,islamabad,dubai,Uk,france,usa};
-        //        City[] cities2 = {islamabad,dubai,Uk,france,usa,karachi};
-        //        City[] cities3 = {islamabad,karachi};
-        //        City[] cities4 = {karachi,islamabad,dubai};
-        ////
-        //        FlightRoutesLinkedList fl = new FlightRoutesLinkedList();
-        //        fl.addRoute(cities1);
-        //        fl.addRoute(cities2);
-        //        fl.addRoute(cities3);
-        //        fl.addRoute(cities4);
-        //        fl.addPassengerToFlight(passenger2,1,fl);
-        //        NodeFlightRoute flt = fl.addPassengerToFlight(passenger3,0,fl);
-        //        flt = fl.addPassengerToFlight(passenger2,0,fl);
-        //        flt = fl.addPassengerToFlight(passenger4,0,fl);
-        //        System.out.println(flt.getRouteId());
-        //        NodeFlight nf = flt.flights.head;
-        //        while(nf != null){
-        //            System.out.println(nf.source.name);
-        //            System.out.println(Arrays.toString(nf.seats));
-        //            nf = nf.next;
-        //        }
-        //        System.out.println(Arrays.toString(flt.flights.head.seats));
-        //        fl.printSeats(0,fl);
-        //        System.out.println(fl.head.flights.head.seats[0]);
-
-        //        fl.display();
-        //        System.out.println();
-        //        fl.getRoutes("islamabad","karachi");
-        //        System.out.println();
-        //        fl.display();
     }
 }
