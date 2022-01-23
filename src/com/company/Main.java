@@ -7,15 +7,16 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        FlightRoutesLinkedList fl = new FlightRoutesLinkedList();
-        PassengerLinkedList pl = new PassengerLinkedList();
+        FlightRoutesList fl = new FlightRoutesList();
+        PassengerList passengersList = new PassengerList();
         Scanner scanner = new Scanner(System.in);
         StaticUtils staticUtils = new StaticUtils();
         ArrayList<City> citiesList = new ArrayList<City>();
         try {
             staticUtils = FileManager.loadStaticsSerialized();
-            citiesList = FileManager.loadCitySerialized(citiesList);
-            staticUtils.loadFrom();
+            passengersList = FileManager.loadPassengersSerialized();
+            citiesList = FileManager.loadCitySerialized();
+            staticUtils.loadClasses();
             fl = FileManager.loadRouteSerialized(fl);
         } catch (IOException e) {
             e.printStackTrace();
@@ -25,138 +26,149 @@ public class Main {
                 System.out.println("Main Menu");
                 System.out.println("1. Add City");
                 System.out.println("2. Create Route");
-                System.out.println("3. Display All Flight");
-                System.out.println("4. Add Passenger");
-                System.out.println("5. Display Passenger");
-                System.out.println("6. Display All Passenger");
-                System.out.println("7. Find Flight");
-                System.out.println("8. Book Flight");
-                System.out.println("9. Print Flight Seats");
-                System.out.println("10. Exit");
+                System.out.println("3. Display Cities");
+                System.out.println("4. Display All Flight");
+                System.out.println("5. Add Passenger");
+                System.out.println("6. Display Passenger");
+                System.out.println("7. Display All Passenger");
+                System.out.println("8. Find Flight");
+                System.out.println("9. Book Flight");
+                System.out.println("10. Print Flight Seats");
+                System.out.println("11. Exit");
                 System.out.println("Enter your choice: ");
                 int choice = scanner.nextInt();
                 //scanner.nextLine();
-                if (choice < 10) {
-                    switch (choice) {
-                        case 1:
-                            System.out.println("Enter city : ");
-                            String cityName = scanner.next();
-                            City city = new City(cityName);
-                            citiesList.add(city);
+                if (choice < 11) {
+                    if (choice == 1) {
+                        System.out.println("Enter city : ");
+                        String cityName = scanner.next();
+                        City city = new City(cityName);
+                        citiesList.add(city);
+                        try {
+                            FileManager.saveCitySerialized(citiesList);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("City added!");
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 2) {
+                        System.out.println("Enter number of cities : ");
+                        int cityNum = scanner.nextInt();
+                        System.out.println("Available Cities : ");
+                        citiesList.forEach(city -> System.out.println(city.toString()));
+                        scanner.nextLine();
+
+                        City[] cities = new City[cityNum];
+                        boolean isFound = false;
+                        for (int i = 0; (i < cityNum); i++) {
+                            System.out.println("Enter city " + (i + 1) + " : ");
+                            String cityEntered = scanner.next();
+                            for (City city1 : citiesList) {
+                                if (city1.name.equals(cityEntered)) {
+                                    cities[i] = city1;
+                                    isFound = true;
+                                }
+                            }
+                            if (!isFound) {
+                                System.out.println("City not found!");
+                                break;
+                            }
+                        }
+                        if (isFound) {
+                            fl.addRoute(cities);
                             try {
-                                FileManager.saveCitySerialized(citiesList);
+                                FileManager.saveRouteSerialized(fl);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            System.out.println("City added!");
+                            System.out.println("Route Added!");
                             scanner.nextLine();
-                            scanner.nextLine();
+                        }
+                    } else if (choice == 3) {
+                        System.out.println("Cities : ");
+                        citiesList.forEach(city -> System.out.println(city.toString()));
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 4) {
+                        fl.display();
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 5) {
+                        System.out.println("Enter name :");
+                        scanner.nextLine();
+                        String name = scanner.nextLine();
+                        if (name.equals("")) {
+                            System.out.println("Name cannot be empty!");
                             break;
-                        case 2:
-                            System.out.println("Enter number of cities : ");
-                            int cityNum = scanner.nextInt();
-                            scanner.nextLine();
-                            City[] cities = new City[cityNum];
-                            boolean isFound = false;
-                            for (int i = 0; (i < cityNum); i++) {
-                                System.out.println("Enter city " + (i + 1) + " : ");
-                                String cityEntered = scanner.next();
-                                for (City city1 : citiesList) {
-                                    if (city1.name.equals(cityEntered)) {
-                                        cities[i] = city1;
-                                        isFound = true;
-                                    }
-                                }
-                                if (!isFound) {
-                                    System.out.println("City not found!");
-                                    break;
-                                }
-                            }
-                            if (isFound) {
-                                fl.addRoute(cities);
-                                try {
-                                    FileManager.saveRouteSerialized(fl);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                System.out.println("Route Added!");
-                                scanner.nextLine();
-                            }
-                            break;
-                        case 3:
-                            fl.display();
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-                        case 4:
-                            System.out.println("Enter name : ");
-                            String name = scanner.next();
-                            System.out.println("Enter Flight Number : ");
-                            int flightNumber = scanner.nextInt();
+                        }
+                        NodePassenger passenger = passengersList.addPassenger(name);
+                        System.out.println("Passenger added with id " + passenger.passengerId + "!");
+                        FileManager.savePassengersSerialized(passengersList);
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 6) {
+                        System.out.println("Enter passenger id : ");
+                        int passengerId = scanner.nextInt();
+                        passengersList.displayPassenger(passengerId);
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 7) {
+                        passengersList.displayAllPassengers();
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 8) {
+                        System.out.println("Enter Source : ");
+                        String citySource = scanner.next();
+                        System.out.println("Enter Destination : ");
+                        String cityDestination = scanner.next();
+                        fl.getRoutes(citySource, cityDestination);
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 9) {
+                        System.out.println("Enter Passenger Id : ");
+                        int passengerId = scanner.nextInt();
+                        NodePassenger passenger = passengersList.findPassenger(passengerId);
+                        if (passenger != null) {
                             System.out.println("Enter Source : ");
                             String citySource = scanner.next();
                             System.out.println("Enter Destination : ");
                             String cityDestination = scanner.next();
-                            NodePassenger passenger = pl.addPassenger(name, flightNumber, citySource, cityDestination);
-                            System.out.println("Your Passenger ID is : " + passenger.getPassengerId());
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-                        case 5:
-                            System.out.println("Enter passenger id : ");
-                            int passengerId = scanner.nextInt();
-                            pl.displayPassenger(passengerId);
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-                        case 6:
-                            pl.displayAllPassengers();
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-                        case 7:
-                            System.out.println("Enter Source : ");
-                            citySource = scanner.next();
-                            System.out.println("Enter Destination : ");
-                            cityDestination = scanner.next();
+                            System.out.println("Available Routes: ");
                             fl.getRoutes(citySource, cityDestination);
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-                        case 8:
-                            System.out.println("Enter Passenger Id : ");
-                            passengerId = scanner.nextInt();
-                            passenger = pl.findPassenger(passengerId);
-                            fl.addPassengerToFlight(passenger, passenger.getFlightId(), fl);
-                            System.out.println("Passenger Added To flight : " + passenger.getFlightId());
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-                        case 9:
-                            System.out.println("Enter Flight Number");
-                            flightNumber = scanner.nextInt();
-                            System.out.println("Printing All seats : ");
-                            fl.printSeats(flightNumber, fl);
-                            scanner.nextLine();
-                            scanner.nextLine();
-                            break;
-
-                        default:
-                            System.out.println("Wrong choice");
-                            break;
+                            System.out.println("Enter Selected Route Id : ");
+                            int routeId = scanner.nextInt();
+                            if (fl.verifyRoute(routeId, citySource, cityDestination)) {
+                                fl.addPassengerToFlights(passenger, routeId, citySource, cityDestination);
+                                System.out.println(
+                                        "Flight Booked! " + passenger.passengerName + " is booked on Route "
+                                                + routeId);
+                            } else {
+                                System.out.println("Incorrect information!");
+                            }
+                        } else {
+                            System.out.println("Passenger not found!");
+                        }
+                        scanner.nextLine();
+                        scanner.nextLine();
+                    } else if (choice == 10) {
+                        System.out.println("Enter Route Number");
+                        int routeId = scanner.nextInt();
+                        System.out.println("Printing All Flight Seats in Route" + routeId + ": ");
+                        fl.printSeats(routeId, fl);
+                        scanner.nextLine();
+                        scanner.nextLine();
                     }
                 } else {
                     System.out.println("Thank You!");
                     scanner.close();
                     return;
                 }
-            }
-            catch (Exception ex){
+            } catch (Exception ex) {
                 System.out.println(ex.getMessage());
                 scanner.nextLine();
             }
         }
-
 
         //        System.out.println("Thank you!");
 

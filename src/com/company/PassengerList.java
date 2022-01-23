@@ -2,7 +2,7 @@ package com.company;
 
 import java.io.Serializable;
 
-public class PassengerLinkedList implements Serializable {
+public class PassengerList implements Serializable {
     private NodePassenger head;
 
     public boolean isEmpty() {
@@ -49,10 +49,8 @@ public class PassengerLinkedList implements Serializable {
         return count;
     }
 
-    public NodePassenger addPassenger(String name, int flightId,
-            /* String gender, int passportNumber, String nationality, */String source, String destination) {
-        NodePassenger newNode = new NodePassenger(name, flightId, /*gender,passportNumber,nationality,*/source,
-                destination);
+    public NodePassenger addPassenger(String name) {
+        NodePassenger newNode = new NodePassenger(name);
         newNode.next = head;
         head = newNode;
         return newNode;
@@ -64,6 +62,7 @@ public class PassengerLinkedList implements Serializable {
             if (passengerId == current.getPassengerId()) {
                 return current;
             }
+            current = current.next;
         }
         System.out.println("No such passenger Id!");
         return null;
@@ -89,6 +88,16 @@ public class PassengerLinkedList implements Serializable {
             }
             temp.next = temp.next.next;
         }
+    }
+
+    public int count() {
+        NodePassenger current = head;
+        int count = 0;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
     }
 
     //    public void addPassengerToFlight(NodePassenger passenger,int flightId,FlightRoutesLinkedList frl) {
