@@ -2,32 +2,28 @@ package com.company;
 
 import java.io.Serializable;
 
-public class FlightsLinkedList implements Serializable {
+public class FlightsList implements Serializable {
+    private int count = 0;
+    public NodeFlight head;
+
+    public FlightsList() {
+        head = null;
+    }
 
     public int getCount() {
         return count;
-    }
-
-    private int count = 0;
-
-    public NodeFlight head;
-
-    public FlightsLinkedList() {
-
     }
 
     public boolean isEmpty() {
         return (head == null);
     }
 
-    public int addFlight(City source, City destination) {
+    public void addFlight(City source, City destination) {
         NodeFlight flight = new NodeFlight(source, destination);
         insertLast(flight);
-        return flight.getFlightConnectionsNum();
     }
 
     private void insertLast(NodeFlight newNode) {
-
         if (isEmpty()) {
             newNode.next = head;
             head = newNode;
