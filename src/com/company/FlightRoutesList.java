@@ -59,10 +59,12 @@ public class FlightRoutesList implements Serializable {
             while (currentNode != null) {
                 NodeFlight[] route = currentNode.getFlights(sourceCity, destinationCity);
                 if (route != null) {
-                    routeFound = true;
                     //TODO: Also Print Vacant Seats
                     System.out.println("Route id " + currentNode.getRouteId() + " : ");
                     for (int i = 0; i < route.length; i++) {
+                        if (route[i].getVacantSeats() != 0){
+                            routeFound = true;
+                        }
                         System.out.println(
                                 route[i].source.name + "-->" + route[i].destination.name + "(Seats: "
                                         + route[i].getVacantSeats() + ")");
