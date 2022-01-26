@@ -181,4 +181,17 @@ public class FileManager {
 		}
 		return data1;
 	}
+
+	// SAVE ALL
+	public static void saveAll(PassengerList passengerList, FlightRoutesList flightRoutesList, StaticUtils staticUtils, ArrayList<City> city){
+		try {
+			saveRouteSerialized(flightRoutesList);
+			savePassengersSerialized(passengerList);
+			saveCitySerialized(city);
+			saveStaticsSerialized();
+		}
+		catch (Exception ex){
+			System.out.println(ex.getMessage());
+		}
+	}
 }
