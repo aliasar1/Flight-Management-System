@@ -5,11 +5,18 @@ import java.io.Serializable;
 public class NodeFlightRoute implements Serializable {
     public static int nextRouteId = 0;
     int routeId;
+
+    public String getDate() {
+        return date;
+    }
+
+    public String date;
     FlightsList flights;
 
     public NodeFlightRoute next = null;
 
-    public NodeFlightRoute() {
+    public NodeFlightRoute(String date) {
+        this.date = date;
         this.routeId = nextRouteId;
         nextRouteId++;
         flights = new FlightsList();
@@ -108,6 +115,7 @@ public class NodeFlightRoute implements Serializable {
 
     public void display() {
         System.out.println("Route ID: " + this.routeId);
+        System.out.println("Date    : " + getDate());
         flights.display();
         System.out.println();
     }

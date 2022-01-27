@@ -13,8 +13,8 @@ public class FlightRoutesList implements Serializable {
         return (head == null);
     }
 
-    public int addRoute(City[] cities) {
-        NodeFlightRoute route = new NodeFlightRoute();
+    public int addRoute(City[] cities,String date) { // added date
+        NodeFlightRoute route = new NodeFlightRoute(date); // added date
         for (int i = 0; i < cities.length - 1; i++) {
             route.flights.addFlight(cities[i], cities[i + 1]);
         }
@@ -50,8 +50,9 @@ public class FlightRoutesList implements Serializable {
         }
     }
 
-    public void getRoutes(String sourceCity, String destinationCity) {
+    public boolean getRoutes(String sourceCity, String destinationCity) {
         boolean routeFound = false;
+        boolean seatsAvailable = false;
         if (isEmpty()) {
             System.out.println("No flights Available! It's doomsday!");
         } else {
@@ -59,24 +60,29 @@ public class FlightRoutesList implements Serializable {
             while (currentNode != null) {
                 NodeFlight[] route = currentNode.getFlights(sourceCity, destinationCity);
                 if (route != null) {
+                    routeFound = true;
                     //TODO: Also Print Vacant Seats
                     System.out.println("Route id " + currentNode.getRouteId() + " : ");
                     for (int i = 0; i < route.length; i++) {
                         if (route[i].getVacantSeats() != 0){
-                            routeFound = true;
+                            seatsAvailable = true;
+                            System.out.println(
+                                    route[i].source.name + "-->" + route[i].destination.name + "(Seats: "
+                                            + route[i].getVacantSeats() + ")");
                         }
-                        System.out.println(
-                                route[i].source.name + "-->" + route[i].destination.name + "(Seats: "
-                                        + route[i].getVacantSeats() + ")");
                     }
                 }
                 System.out.println();
                 currentNode = currentNode.next;
             }
+            if(!seatsAvailable){
+                System.out.println("No seats available in this flight!");
+            }
             if (!routeFound) {
                 System.out.println("No flights available for this route");
             }
         }
+        return(routeFound && seatsAvailable);
     }
 
     public void addPassengerToFlights(NodePassenger passenger, int routeId, String sourceCity, String destinationCity) {
@@ -91,6 +97,7 @@ public class FlightRoutesList implements Serializable {
                 while (flight != null) {
                     int seatNum; //seat number
                     if (flight.source.name.equals(sourceCity)) {
+
                         for (int i = 0; i < flight.seats.length; i++) {
                             if (flight.seats[i] == null) {
                                 flight.seats[i] = passenger;
@@ -127,6 +134,59 @@ public class FlightRoutesList implements Serializable {
             current = current.next;
         }
     }
+
+    //-------------------------------------//
+
+    public void removePassengerFromFlights(NodePassenger passenger, int routeId, String sourceCity, String destinationCity) {
+
+        NodeFlightRoute current = this.head; // flightLinkedList's head which is a NodeFlight node
+
+        //Getting connection numbers to add passenger between specific flights
+        while (current != null) {
+            if (current.getRouteId() == routeId) {
+                //flight node (for from-to)
+                NodeFlight flight = current.flights.head;
+                while (flight != null) {
+                    int seatNum; //seat number
+                    if (flight.source.name.equals(sourceCity)) {
+
+                        for (int i = 0; i < flight.seats.length; i++) {
+                            if (flight.seats[i] == passenger) {
+                                flight.seats[i] = null;
+                                seatNum = i;
+                                System.out.println("Passenger removed from seat " + seatNum + " on flight " + flight.flightId);
+                                if (!flight.destination.name.equals(destinationCity)) {
+                                    flight = flight.next;
+                                } else {
+                                    break;
+                                }
+                                //traverse from source city to destination city and set seats in between
+                                while (flight != null) {
+                                    for (i = 0; i < flight.seats.length; i++) {
+                                        if (flight.seats[i] == passenger) {
+                                            flight.seats[i] = null;
+                                            seatNum = i;
+                                            System.out.println(
+                                                    "Passenger removed from seat " + seatNum + " on flight " + flight.flightId);
+                                            break;
+                                        }
+                                    }
+                                    if (flight.destination.name.equals(destinationCity)) {
+                                        break;
+                                    }
+                                    flight = flight.next;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    flight = flight.next;
+                }
+            }
+            current = current.next;
+        }
+    }
+    //-------------------------------------//
 
     // temporary print seats to check if its working
     public void printSeats(int flightId, FlightRoutesList frl) {
