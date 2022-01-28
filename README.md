@@ -11,12 +11,12 @@ The purpose is to build this in a way that this reduces the manual and paper wor
 Moreover, we have worked with complex algorithms such as Floyd’s Algorithm and Djikstra Algorithm to find the best way to suggest passenger path according to user’s source and destination location. 
 
 ## Application have following features:
- Adding routes with different number of cities.
- Adding passengers.
- Providing passengers best routes suggestions.
- Booking flights.
- Record of all flights data.
- Record of passenger’s data.
+1. Adding routes with different number of cities.
+2. Adding passengers.
+3. Providing passengers best routes suggestions.
+4. Booking flights.
+5. Record of all flights data.
+6. Record of passenger’s data.
 
 ## MOTIVATION
 The motivation behind the idea is that now a days the world is getting digitalized so in order  to remove all manual and paper work we have created system which would help us to manage data more accurately and efficiently. Moreover, this will facilitate passengers to book flight more easily as we would be suggesting paths for the flights.
