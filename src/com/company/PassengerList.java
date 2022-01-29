@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class PassengerList implements Serializable {
     private NodePassenger head;
 
+    // Time complexity = O(1)
     public boolean isEmpty() {
         return (head == null);
     }
 
+    // Time complexity = O(n)
     public void displayAllPassengers() {
         if (isEmpty()) {
             System.out.println("Linked list is empty!");
@@ -23,6 +25,7 @@ public class PassengerList implements Serializable {
         }
     }
 
+    // Time complexity = O(n)
     public void displayPassenger(int id) {
         if (isEmpty()) {
             System.out.println("Linked list is empty!");
@@ -39,6 +42,7 @@ public class PassengerList implements Serializable {
         }
     }
 
+    // Time complexity = O(n)
     public int listLength() {
         NodePassenger current = head;
         int count = 0;
@@ -49,6 +53,7 @@ public class PassengerList implements Serializable {
         return count;
     }
 
+    // Time complexity = O(n)
     public boolean searchDuplicationPassport(String passportNum){
         NodePassenger current = head;
         while (current != null) {
@@ -60,6 +65,7 @@ public class PassengerList implements Serializable {
         return false;
     }
 
+    // Time complexity = O(1)
     public NodePassenger addPassenger(String name, String passNum) {
         NodePassenger newNode = new NodePassenger(name, passNum);
         newNode.next = head;
@@ -67,7 +73,7 @@ public class PassengerList implements Serializable {
         return newNode;
     }
 
-
+    // Time complexity = O(n)
     public NodePassenger findPassenger(int passengerId) {
         NodePassenger current = head;
         while (current != null) {
@@ -80,6 +86,7 @@ public class PassengerList implements Serializable {
         return null;
     }
 
+    // Time complexity = O(n)
     public void deleteFromPosition(int pos) {
         if (isEmpty()) {
             System.out.println("List is already empty.");
@@ -102,6 +109,7 @@ public class PassengerList implements Serializable {
         }
     }
 
+    // Time complexity = O(n)
     public int count() {
         NodePassenger current = head;
         int count = 0;

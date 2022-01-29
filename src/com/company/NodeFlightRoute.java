@@ -6,6 +6,7 @@ public class NodeFlightRoute implements Serializable {
     public static int nextRouteId = 0;
     int routeId;
 
+    // Time complexity = O(1)
     public String getDate() {
         return date;
     }
@@ -26,6 +27,7 @@ public class NodeFlightRoute implements Serializable {
         return routeId;
     }
 
+    // Time complexity = O(n^2)
     public NodeFlight[] getFlights(String citySource, String cityDestination) {
         int j = 0; //count for cities nodes between source city and destination city
 
@@ -69,6 +71,7 @@ public class NodeFlightRoute implements Serializable {
     }
 
     // helper function to find the best route
+    // Time complexity = O(n^2)
     public City[] getCities(String citySource, String cityDestination) {
 
         int j = 0; //count for cities nodes between source city and destination city
@@ -113,6 +116,7 @@ public class NodeFlightRoute implements Serializable {
         return null;
     }
 
+    // Time complexity = O(1) combine with display method Time complexity = O(n)
     public void display() {
         System.out.println("Route ID: " + this.routeId);
         System.out.println("Date    : " + getDate());

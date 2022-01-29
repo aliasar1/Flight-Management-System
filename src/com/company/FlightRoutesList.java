@@ -5,14 +5,17 @@ import java.io.Serializable;
 public class FlightRoutesList implements Serializable {
     NodeFlightRoute head;
 
+    // Time complexity = O(1)
     public FlightRoutesList() {
         head = null;
     }
 
+    // Time complexity = O(1)
     public boolean isEmpty() {
         return (head == null);
     }
 
+    // Time complexity = O(n)
     public int addRoute(City[] cities,String date) { // added date
         NodeFlightRoute route = new NodeFlightRoute(date); // added date
         for (int i = 0; i < cities.length - 1; i++) {
@@ -22,6 +25,7 @@ public class FlightRoutesList implements Serializable {
         return route.getRouteId();
     }
 
+    // Time complexity = O(n)
     private void insertLast(NodeFlightRoute newNode) {
 
         if (isEmpty()) {
@@ -37,6 +41,7 @@ public class FlightRoutesList implements Serializable {
         }
     }
 
+    // Time complexity = O(n)
     public void display() {
         if (isEmpty()) {
             System.out.println("Linked list is empty!");
@@ -50,6 +55,7 @@ public class FlightRoutesList implements Serializable {
         }
     }
 
+    // Time complexity = O(n^2)
     public boolean getRoutes(String sourceCity, String destinationCity) {
         boolean routeFound = false;
         boolean seatsAvailable = false;
@@ -85,6 +91,7 @@ public class FlightRoutesList implements Serializable {
         return(routeFound && seatsAvailable);
     }
 
+    // Time complexity = O(n^4)
     public void addPassengerToFlights(NodePassenger passenger, int routeId, String sourceCity, String destinationCity) {
 
         NodeFlightRoute current = this.head; // flightLinkedList's head which is a NodeFlight node
@@ -137,11 +144,11 @@ public class FlightRoutesList implements Serializable {
 
     //-------------------------------------//
 
+    // Time complexity = O(n^4)
     public void removePassengerFromFlights(NodePassenger passenger, int routeId, String sourceCity, String destinationCity) {
 
         NodeFlightRoute current = this.head; // flightLinkedList's head which is a NodeFlight node
 
-        //Getting connection numbers to add passenger between specific flights
         while (current != null) {
             if (current.getRouteId() == routeId) {
                 //flight node (for from-to)
@@ -189,6 +196,7 @@ public class FlightRoutesList implements Serializable {
     //-------------------------------------//
 
     // temporary print seats to check if its working
+    // Time complexity = O(n^2)
     public void printSeats(int flightId, FlightRoutesList frl) {
         NodeFlightRoute current = frl.head;
         while (current != null) {
@@ -214,6 +222,7 @@ public class FlightRoutesList implements Serializable {
         }
     }
 
+    // Time complexity = O(n^2)
     public boolean verifyRoute(int routeId, String sourceCity, String destinationCity) {
         NodeFlightRoute current = head;
         boolean sourceExists = false;
@@ -240,6 +249,7 @@ public class FlightRoutesList implements Serializable {
         return (sourceExists && destinationExists);
     }
 
+    // Time complexity = O(n)
     public int count() {
         int count = 0;
         NodeFlightRoute current = head;
