@@ -12,6 +12,7 @@ public class NodeFlight implements Serializable {
     public NodePassenger[] seats;
     public NodeFlight next = null;
 
+    // Time complexity = O(1)
     public NodeFlight(City source, City destination) {
         this.flightId = nextFlightId;
         this.source = source;
@@ -20,6 +21,7 @@ public class NodeFlight implements Serializable {
         nextFlightId++;
     }
 
+    // Time complexity = O(n)
     public int getVacantSeats() {
         int count = 0;
         for (int i = 0; i < seats.length; i++) {
@@ -30,6 +32,7 @@ public class NodeFlight implements Serializable {
         return count;
     }
 
+    // Time complexity = O(1)
     public void display() {
         System.out.print(source.name + " --> " + destination.name + "\n");
     }

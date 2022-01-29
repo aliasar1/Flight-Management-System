@@ -8,6 +8,7 @@ public class StaticUtils implements Serializable {
     public int nextPassengerId;
     public int nextCityCode;
 
+    // Time complexity = O(1)
     public StaticUtils() {
         this.nextCityCode = 0;
         this.nextFlightId = 0;
@@ -15,6 +16,7 @@ public class StaticUtils implements Serializable {
         this.nextPassengerId = 0;
     }
 
+    // Time complexity = O(1)
     public StaticUtils(int nRI, int pID, int nCC, int nFI) {
         this.nextCityCode = nCC;
         this.nextRouteId = nRI;
@@ -22,6 +24,7 @@ public class StaticUtils implements Serializable {
         this.nextPassengerId = pID;
     }
 
+    // Time complexity = O(1)
     public void loadClasses() {
         City.nextCityCode = this.nextCityCode;
         NodeFlight.nextFlightId = this.nextFlightId;
@@ -29,6 +32,7 @@ public class StaticUtils implements Serializable {
         NodePassenger.nextPassengerId = this.nextPassengerId;
     }
 
+    // Time complexity = O(1)
     public void loadFromClasses() {
         this.nextCityCode = City.nextCityCode;
         this.nextFlightId = NodeFlight.nextFlightId;

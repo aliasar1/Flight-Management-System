@@ -7,7 +7,14 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        //regex data format
         String s = "^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[13-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$";
+
+//        if (!validateAdmin()){
+//            System.out.println("Invalid username or password! System is shutting down...");
+//            System.exit(0);
+//        }
+
         FlightRoutesList fl = new FlightRoutesList();
         PassengerList passengersList = new PassengerList();
         Scanner scanner = new Scanner(System.in);
@@ -127,7 +134,7 @@ public class Main {
                             if (c2 == 1) {
                                 System.out.println("Enter name :");
                                 String name = scanner.nextLine().toUpperCase();
-                                if (name.equals("") || !name.strip().matches("[a-zA-Z]+")){
+                                if (name.equals("") || !name.strip().matches("^[A-Za-z\\s]*$")){
                                     System.out.println("Name must have only alphabets!");
                                     continue;
                                 }
@@ -307,13 +314,23 @@ public class Main {
         System.out.println("PRESS 0: TO RETURN BACK");
     }
 
-    public static void bookingPanel(){
+    public static void bookingPanel() {
         System.out.println();
         System.out.println("Press 1: FIND FLIGHT");
         System.out.println("Press 2: BOOK FLIGHT");
         System.out.println("Press 3: PRINT FLIGHT SEATS");
         System.out.println("Press 4: CANCEL FLIGHT");
         System.out.println("PRESS 0: TO RETURN BACK");
+    }
+
+    public static boolean validateAdmin(){
+        System.out.println("**** ADMIN VERIFICATION ****");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter username: ");
+        String uName = sc.nextLine();
+        System.out.print("Enter password: ");
+        String pass = sc.nextLine();
+        return uName.equals("zabairline") && pass.equals("admin123");
     }
 
 }
